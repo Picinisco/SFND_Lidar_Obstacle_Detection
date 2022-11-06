@@ -51,9 +51,10 @@ void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     //renderRays(viewer,lidar->position, inputCloud);
     renderPointCloud(viewer, inputCloud, "inputCloud");
     
-    // TODO:: Create point processor
+    // TODO:: Create point processor by instantiating on the HEAP 
 
 ProcessPointClouds<pcl::PointXYZ>* pointProcessor = new ProcessPointClouds<pcl::PointXYZ>();
+ProcessPointClouds<pcl::PointXYZI>* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
 
 //  Segment the Point Cloud
 std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessor->SegmentPlane(inputCloud,100,0.2);
@@ -94,7 +95,7 @@ void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& vi
 
 int main (int argc, char** argv)
 {
-    std::cout << "frting enviroment" << std::endl;
+    std::cout << "Hello Anthony, Filrtering Enviroment" << std::endl;
 
     pcl::visualization::PCLVisualizer::Ptr viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
     CameraAngle setAngle = XY;
