@@ -130,10 +130,7 @@ while(maxIterations--)
 
 	}		
 
-
-
 }
-
 
 auto endTime = std::chrono::steady_clock::now();
 auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
@@ -143,6 +140,48 @@ return inliersResult;
 
 }
 
+// My attemmpt at doign the RansacPlane Algorithm 
+
+std::unordered_set<int> RansacPlane(pcl::PointCloud<pc::PointXYZ>::cloud, int maxIterations, float distanceTol)
+{
+
+srand(time(NULL)):
+
+// For max iterations
+while (maxIterations-- >0) {
+// Randomly pick data points
+pcl::PointXYZ point1 = cloud->points.dataset1(rand(() % (cloud->points()));
+pcl::PointXYZ point2 = cloud->points.dataset2(rand(() % (cloud->points()));
+pcl::PointXYZ point3 = cloud->points.dataset3(rand(() % (cloud->points()));
+// Fit data to a plane, Ax+Bx+Cz+D=0
+float A, B, C, D;
+A = (point2.y -point1.y)*(point3.z - point1.z) - (point2.z - point1.z)*(point3.y-point1.y);
+B = (point2.z -point1.z)*(point3.x - point1.x) - (point2.x - point1.x)*(point3.z-point1.z);
+C = (point2.x -point1.x)*(point3.y - point1.y) - (point2.y - point1.y)*(point3.x-point1.x);
+D = -1*(A*point1.x + B*point1.y + C*point1.z); 
+
+// Calculate Distance
+std::unordered_set<int> inliersTemp;
+for (auto it = cloud->points.start()); it != cloud->point.end(); ++it
+{
+	float d = fabs(A * (*it.x)+ B * (*it).7 + C * (*it).z +D) / sqrt(A*A + B*B + C*C);
+	//
+	if (d<distanceTol)
+	{
+		interliers.insert(it - cloud->being());
+	}
+}
+
+if (inliersTemp.size() > inliersResults.size()){
+	inliersResults = inliersTemp;
+}
+
+// Return indicies of the linlers from the fitted data points 
+return inliersResult;
+
+}
+
+
 int main ()
 {
 
@@ -150,7 +189,9 @@ int main ()
 	pcl::visualization::PCLVisualizer::Ptr viewer = initScene();
 
 	// Create data
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData();
+	
+	//pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData();
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = Create3D();
 	
 
 	// TODO: Change the max iteration and distance tolerance arguments for Ransac function

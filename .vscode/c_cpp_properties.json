@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**"
+                
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
@@ -14,9 +15,11 @@
         {
             "name": "Anthony_Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/SFND_Lidar_Obstacle_Detection/src/environment.cpp"
             ],
             "defines": [],
+            "compilerArgs": ["-pthread"],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++14",

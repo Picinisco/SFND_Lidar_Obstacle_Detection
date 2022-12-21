@@ -38,7 +38,7 @@ std::vector<Car> initHighway(bool renderScene, pcl::visualization::PCLVisualizer
 void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
     // ----------------------------------------------------
-    // -----Open 3D viewer and display simple highway ----- Anthony Anthony Anthony
+    // -----Open 3D viewer and display simple highway   ----- Anthony Anthony Anthony
     // ----------------------------------------------------
     
     // RENDER OPTIONS
@@ -57,9 +57,9 @@ ProcessPointClouds<pcl::PointXYZ>* pointProcessor = new ProcessPointClouds<pcl::
 ProcessPointClouds<pcl::PointXYZI>* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
 
 //  Segment the Point Cloud
-std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessor->SegmentPlane(inputCloud,100,0.2);
+std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessor->SegmentPlane(inputCloud,200,0.2);
 renderPointCloud(viewer,segmentCloud.first,"obstCloud",Color(1,0,0));
-renderPointCloud(viewer,segmentCloud.second,"planetCloud",Color(0,1,0));
+renderPointCloud(viewer,segmentCloud.second,"planetCloud",Color(0,1,1));
 
 
   
@@ -95,7 +95,7 @@ void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& vi
 
 int main (int argc, char** argv)
 {
-    std::cout << "Hello Anthony, Filrtering Enviroment" << std::endl;
+    std::cout << "Scissor Island, Filtering Enviroment" << std::endl;
 
     pcl::visualization::PCLVisualizer::Ptr viewer (new pcl::visualization::PCLVisualizer ("3D Viewer"));
     CameraAngle setAngle = XY;
