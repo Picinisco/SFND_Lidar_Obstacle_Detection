@@ -130,10 +130,7 @@ while(maxIterations--)
 
 	}		
 
-
-
 }
-
 
 auto endTime = std::chrono::steady_clock::now();
 auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
@@ -143,6 +140,51 @@ return inliersResult;
 
 }
 
+// My attemmpt at doign the RansacPlane Algorithm 
+
+std::unordered_set<int> RansacPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int maxIterations, float distanceTol)
+{
+
+std::unordered_set<int> inliersResult;
+
+srand(time(NULL));
+
+// For max iterations
+while (maxIterations-- >0) {
+// Randomly pick data points
+pcl::PointXYZ point1 = cloud->points.at(rand() % (cloud->points.size()));
+pcl::PointXYZ point2 = cloud->points.at(rand() % (cloud->points.size()));
+pcl::PointXYZ point3 = cloud->points.at(rand() % (cloud->points.size()));
+// Fit data to a plane, Ax+Bx+Cz+D=0
+float A, B, C, D;
+A = (point2.y -point1.y)*(point3.z - point1.z) - (point2.z - point1.z)*(point3.y-point1.y);
+B = (point2.z -point1.z)*(point3.x - point1.x) - (point2.x - point1.x)*(point3.z-point1.z);
+C = (point2.x -point1.x)*(point3.y - point1.y) - (point2.y - point1.y)*(point3.x-point1.x);
+D = -1*(A*point1.x + B*point1.y + C*point1.z); 
+
+// Calculate Distance
+std::unordered_set<int> inliersTemp;
+for (auto it = cloud->points.begin(); it != cloud->points.end(); ++it) {
+	float d = fabs(A * (*it).x + B * (*it).y + C * (*it).z +D) / sqrt(A*A + B*B + C*C);
+	//
+	if (d<distanceTol){
+		inliersTemp.insert(it - cloud->begin());
+	}
+
+	}
+
+	if (inliersTemp.size() > inliersResult.size()){
+	inliersResult = inliersTemp;
+	}
+
+}
+
+// Return indicies of the linlers from the fitted data points 
+return inliersResult;
+
+}
+
+
 int main ()
 {
 
@@ -150,13 +192,16 @@ int main ()
 	pcl::visualization::PCLVisualizer::Ptr viewer = initScene();
 
 	// Create data
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData();
+	
+	//pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData();
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData3D();
 	
 
 	// TODO: Change the max iteration and distance tolerance arguments for Ransac function
-	std::unordered_set<int> inliers = Ransac(cloud,10, 1.0);
+	//std::unordered_set<int> inliers = Ransac(cloud,10, 1.0);
+	std::unordered_set<int> inliers = RansacPlane(cloud,10, 1.0); //(cloud,100,0.2)
 
-	pcl::PointCloud<pcl::PointXYZ>::Ptr  cloudInliers(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudInliers(new pcl::PointCloud<pcl::PointXYZ>());
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudOutliers(new pcl::PointCloud<pcl::PointXYZ>());
 
 	for(int index = 0; index < cloud->points.size(); index++)
