@@ -194,7 +194,7 @@ int main ()
 	// Create data
 	
 	//pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData();
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = Create3D();
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData3D();
 	
 
 	// TODO: Change the max iteration and distance tolerance arguments for Ransac function
