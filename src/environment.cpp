@@ -62,8 +62,8 @@ renderPointCloud(viewer,segmentCloud.first,"obstCloud",Color(1,0,0));
 renderPointCloud(viewer,segmentCloud.second,"planetCloud",Color(0,1,1));
 
 // Cluster objects
-
 std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> cloudClusters = pointProcessor->Clustering(segmentCloud.first, 1.0,3,30); // 1.0 for distance tolerance, 3 points for a cluster, 30 is max # of points
+
 int clusterId = 0;
 std::vector<Color> colors = {Color(1,0,0), Color(1,1,0), Color(0,0,1)};
 for(pcl::PointCloud<pcl::PointXYZ>::Ptr cluster : cloudClusters)
