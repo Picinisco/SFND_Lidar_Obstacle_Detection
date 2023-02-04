@@ -63,7 +63,7 @@ typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(ty
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
     std::cout << "filtering took " << elapsedTime.count() << " milliseconds" << std::endl;
 
-    return cloud;
+    return cloudRegion;
 }
 
 template <typename PointT>
@@ -191,7 +191,7 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    std::cout << "Clustering took this amount of time" << elapsedTime.count() << " milliseconds and found" <<std::endl;
+    std::cout << "Clustering took" << elapsedTime.count() << " milliseconds and found" <<std::endl;
 
     return clusters;
 
