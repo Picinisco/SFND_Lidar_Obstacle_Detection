@@ -8,6 +8,9 @@
 // using templates for processPointClouds so also include .cpp to help linker
 #include "processPointClouds.cpp"
 
+// Choose your method (PCL versus Custom Method)
+#define CUSTOM_FUNCTION
+
 std::vector<Car> initHighway(bool renderScene, pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
 
@@ -34,14 +37,29 @@ std::vector<Car> initHighway(bool renderScene, pcl::visualization::PCLVisualizer
     return cars;
 }
 
+
+
 void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZI> pointProcessor, pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloud)
 //void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
 
 inputCloud = pointProcessor.FilterCloud(inputCloud, 0.15, Eigen::Vector4f (-10, -5, -2, 1), Eigen::Vector4f (30,7 ,5, 1));
+
+#if defined PCL_LIBRARY // use point cloud library
 std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentCloud = pointProcessor.SegmentPlane(inputCloud, 25, 0.3);
 //ProcessPointClouds<pcl::PointXYZI> pointProcessor; 
 //pcl::PointCloud<pcl::PointXYZI>:: Ptr inputCloud = pointProcessor.loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
+
+#elif defined CUSTOM_FUNCTION
+
+// Segment Plane Ransac //
+
+std::unordered_set<int> inliers = RansacPlane(cloud,10, 1.0);
+
+#endif
+
+
+
 
 //renderPointCloud(viewer,inputCloud,"cloud");
 
@@ -116,10 +134,6 @@ renderBox(viewer, box, clusterId);
 
 
 }
-
-
-
-
   
 }
 
